@@ -31,8 +31,20 @@ describe('Task4', () => {
         });
     });
 
-    it('should deploy', async () => {
-        // the check is done inside beforeEach
-        // blockchain and task4 are ready to use
+    it('if cell not full doesnt touch it length', async () => {
+        const cell = beginCell()
+          .storeUint(0, 3)
+          .storeRef(
+            beginCell()
+              .storeUint(0b1, 1).endCell()
+          )
+          .endCell();
+    
+        const cellRes = beginCell()
+          .storeUint(0, 3)
+          .storeUint(0b1, 1).endCell();
+    
+        const res = await task3.getChangedLinkedList(0b101, 0b10, cell);
+        expect(res).toEqualCell(cellRes);
     });
 });
