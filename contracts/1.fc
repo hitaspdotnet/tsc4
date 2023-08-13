@@ -11,5 +11,30 @@
 
 ;; testable
 (cell) find_branch_by_hash(int hash, cell tree) method_id {
-  return begin_cell().end_cell();
+  
+  if (tree.is_null()) {
+    return null(); 
+  }
+
+  tuple stack = null();
+  cell output = null();
+
+  stack~push_back(tree);
+
+  while (~ stack.is_null()) {
+
+    cell c = stack~pop_back();
+
+    if (cell_hash(c) == hash) {
+      output = c;
+    }
+    else {
+      slice s = c.begin_parse();
+      repeat (s.slice_refs()) {
+        stack~push_back(s~load_ref());
+      }
+    }
+  }
+
+  return output;
 }
