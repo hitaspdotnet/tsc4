@@ -27,7 +27,6 @@
   int j = n + k;
 
   repeat (j){
-    i = i + 1;
     if((j - i) <= k){
       output~tpush(n1);
     }
@@ -35,6 +34,7 @@
     nextTerm = n1 + n2;
     n1 = n2;
     n2 = nextTerm;
+    i = i + 1;
   }
 
   return output;
