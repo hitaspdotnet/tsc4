@@ -22,11 +22,6 @@
   int n1 = matrixA.tlen(); ;; number of columns in MatrixA
   int m2 = matrixB.at(0).tlen(); ;; number of rows in MatrixB
   int n2 = matrixB.tlen(); ;; number of columns in MatrixB
-  throw_unless(201, n1 <= 32);
-  throw_unless(201, n1 >= 4);
-  throw_unless(201, n2 <= 32);
-  throw_unless(201, n2 >= 4);
-  throw_unless(202, n1 == m2);
 
   int i = 0;
 
