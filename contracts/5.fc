@@ -34,14 +34,13 @@
 (tuple) fibonacci_sequence (int n, int k) method_id {
   var output = empty_tuple();
 
-  throw_unless(100, (0 <= n) & (n <= 370));
-  throw_unless(100, (0 <= k) & (k <= 255));
-
   int i = n;
 
-  while ((i + k) <= 371){
-    int n1 = fibo(i);
-    output~tpush(n1);
+  repeat (k){
+    if((i + k) <= 371){
+      int n1 = fibo(i);
+      output~tpush(n1);
+    }
 
     i = i + 1;
   }
