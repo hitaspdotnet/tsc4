@@ -19,18 +19,26 @@
   var output = empty_tuple();
 
   int i = 0;
-  int j = 0;
-  while (i < matrixA.tlen()) {
-    int value = 0;
-    while (j < matrixB.tlen()) {
-      value += matrixA.at(i) * matrixB.at(j);
+
+  int m1 = matrixA.tlen();
+  int m2 = matrixB.tlen();
+  int n1 = matrixB.tlen();
+  int n2 = matrixA.tlen();
+
+  while (i < m1) {
+    int j = 0;
+    while (j < n2){
+      int value = 0;
+      int x = 0;
+      while (x < m2){
+        value += matrixA.at(i).at(x) * matrixB.at(x).at(j);
+        x = x + 1;
+      }
+      output~tpush(value);
       j = j + 1;
     }
-    output~tpush(value);
-
     i = i + 1;
   }
 
   return output;
 }
-
