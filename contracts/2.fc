@@ -16,7 +16,7 @@
 
 ;; testable
 (tuple) matrix_multiplier(tuple matrixA, tuple matrixB) method_id {
-  var output = new_tuple();
+  var output = empty_tuple();
   int i = 0;
   repeat (matrixA.tlen()) {
     output~tpush(matrixA.index(i) * matrixB.index(i));
