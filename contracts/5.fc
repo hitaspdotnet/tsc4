@@ -34,5 +34,7 @@
     n2 = _next;
     i += 1;
   }
+
+  return output;
 }
 
