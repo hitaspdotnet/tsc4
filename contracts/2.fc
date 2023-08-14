@@ -10,6 +10,7 @@
 -}
 
 (int) tlen (tuple t) asm "TLEN";
+forall X -> int is_tuple(X x) asm "ISTUPLE";
 
 () recv_internal() {
 }
@@ -18,25 +19,27 @@
 (tuple) matrix_multiplier(tuple matrixA, tuple matrixB) method_id {
   var output = empty_tuple();
 
-  int i = 0;
-
   int m1 = matrixA.tlen();
   int m2 = matrixB.tlen();
   int n1 = matrixB.tlen();
   int n2 = matrixA.tlen();
+
+  int i = 0;
 
   while (i < m1) {
     int j = 0;
     while (j < n2){
       int value = 0;
       int x = 0;
+      var row = empty_tuple();
       while (x < m2){
         value += matrixA.at(i).at(x) * matrixB.at(x).at(j);
+        row~tpush(value);
         x = x + 1;
       }
-      output~tpush(value);
       j = j + 1;
     }
+    output~tpush(row);
     i = i + 1;
   }
 
