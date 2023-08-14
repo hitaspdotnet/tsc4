@@ -25,16 +25,19 @@
   int _next = 0;
   int i = 0;
 
-  repeat (n){
-    i = i + 1;
+  repeat (n + k){
     if((n - i) <= k){
       output~tpush(n1);
     }
+
     _next = n1 + n2;
     n1 = n2;
     n2 = _next;
+
+    i = i + 1;
   }
 
+  output~tpush(n1);
   return output;
 }
 
