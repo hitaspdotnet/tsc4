@@ -18,20 +18,25 @@
 (tuple) matrix_multiplier(tuple matrixA, tuple matrixB) method_id {
   var output = empty_tuple();
 
-  int r1 = matrixA.at(0).tlen(); ;; number of rows in MatrixA
-  int c1 = matrixA.tlen(); ;; number of columns in MatrixA
-  int r2 = matrixB.at(0).tlen(); ;; number of rows in MatrixB
-  int c2 = matrixB.tlen(); ;; number of columns in MatrixB
+  int m1 = matrixA.at(0).tlen(); ;; number of rows in MatrixA
+  int n1 = matrixA.tlen(); ;; number of columns in MatrixA
+  int m2 = matrixB.at(0).tlen(); ;; number of rows in MatrixB
+  int n2 = matrixB.tlen(); ;; number of columns in MatrixB
+  throw_unless(201, n1 <= 32);
+  throw_unless(201, n1 >= 4);
+  throw_unless(201, n2 <= 32);
+  throw_unless(201, n2 >= 4);
+  throw_unless(202, n1 == m2);
 
   int i = 0;
 
-  repeat (r1) {
+  repeat (m1) {
     int j = 0;
-    repeat (c2){
+    repeat (n2){
       int value = 0;
       int x = 0;
       var row = empty_tuple();
-      repeat (r2){
+      repeat (m2){
         value = value + ((matrixA.at(i).at(x)) * (matrixB.at(x).at(j)));
         row~tpush(value);
         x = x + 1;
