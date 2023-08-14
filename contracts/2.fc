@@ -27,19 +27,21 @@
 
   repeat (m1) {
     int j = 0;
+    var row = empty_tuple();
+
     repeat (n2){
       int value = 0;
       int x = 0;
-      var row = empty_tuple();
       repeat (m2){
         value = value + ((matrixA.at(i).at(x)) * (matrixB.at(x).at(j)));
-        row~tpush(value);
         x = x + 1;
       }
-      output~tpush(row);
+      row~tpush(value);
 
       j = j + 1;
     }
+    output~tpush(row);
+
     i = i + 1;
   }
 
