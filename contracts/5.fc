@@ -16,7 +16,7 @@
 () recv_internal() {
 }
 
-(int) fibo(int nno) method_id {
+(int) fibo(int nno) {
   var n1 = 0;
   var n2 = 1;
   var nextTerm = 0;
@@ -34,10 +34,15 @@
 (tuple) fibonacci_sequence (int n, int k) method_id {
   var output = empty_tuple();
 
-  int i = n + 1;
+  throw_unless(100, (0 <= n) & (n <= 370));
+  throw_unless(100, (0 <= k) & (k <= 255));
 
-  repeat (k){
-    output~tpush(fibo(i));
+  int i = n;
+
+  while ((i + k) <= 371){
+    int n1 = fibo(i);
+    output~tpush(n1);
+
     i = i + 1;
   }
 
