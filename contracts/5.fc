@@ -27,7 +27,7 @@
   int j = n + k;
 
   repeat (j){
-    if((j - i) <= k){
+    if(i <= k){
       output~tpush(n1);
     }
     if(j <= 370){
