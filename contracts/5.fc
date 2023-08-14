@@ -34,11 +34,11 @@
 (tuple) fibonacci_sequence (int n, int k) method_id {
   var output = empty_tuple();
 
-  var n1 = fibo(n);
+  int i = n + 1;
 
   repeat (k){
-    output~tpush(n1);
-    n1 = fibo(n + 1);
+    output~tpush(fibo(i));
+    i = i + 1;
   }
 
   return output;
