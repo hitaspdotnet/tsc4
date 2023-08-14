@@ -40,7 +40,7 @@
     int n1 = fibo(i);
     output~tpush(n1);
     i += 1;
-  } until ((i + k) <= 370);
+  } until ((i + k) > 371);
 
   return output;
 }
