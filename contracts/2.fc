@@ -21,8 +21,8 @@ forall X -> int is_tuple(X x) asm "ISTUPLE";
 
   int m1 = matrixA.tlen();
   int m2 = matrixB.tlen();
-  int n1 = matrixB.tlen();
-  int n2 = matrixA.tlen();
+  int n1 = matrixA.at(0).tlen();
+  int n2 = matrixB.at(0).tlen();
 
   int i = 0;
 
