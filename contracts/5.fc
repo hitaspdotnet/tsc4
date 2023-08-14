@@ -40,9 +40,8 @@
     if((i + k) <= 371){
       int n1 = fibo(i);
       output~tpush(n1);
+      i = i + 1;
     }
-
-    i = i + 1;
   }
 
   return output;
