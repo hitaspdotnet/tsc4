@@ -37,9 +37,10 @@ forall X -> int is_tuple(X x) asm "ISTUPLE";
         row~tpush(value);
         x = x + 1;
       }
+      output~tpush(row);
+
       j = j + 1;
     }
-    output~tpush(row);
     i = i + 1;
   }
 
