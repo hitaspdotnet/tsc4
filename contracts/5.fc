@@ -36,13 +36,11 @@
 
   int i = n;
 
-  repeat (k){
-    if((i + k) <= 371){
-      int n1 = fibo(i);
-      output~tpush(n1);
-      i = i + 1;
-    }
-  }
+  do {
+    int n1 = fibo(i);
+    output~tpush(n1);
+    i += 1;
+  } until ((i + k) <= 370);
 
   return output;
 }
