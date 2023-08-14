@@ -26,13 +26,13 @@
   int i = 0;
 
   repeat (n){
-    if(n - i <= k){
+    i = i + 1;
+    if((n - i) <= k){
       output~tpush(n1);
     }
     _next = n1 + n2;
     n1 = n2;
     n2 = _next;
-    i += 1;
   }
 
   return output;
