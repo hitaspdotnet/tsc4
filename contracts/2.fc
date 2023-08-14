@@ -9,11 +9,19 @@
   After calculating the result matrix, the function should return final result (as tuple).
 -}
 
+(int) tlen (tuple t) asm "TLEN";
+
 () recv_internal() {
 }
 
 ;; testable
 (tuple) matrix_multiplier(tuple matrixA, tuple matrixB) method_id {
-  return null();
+  var output = new_tuple();
+  int i = 0;
+  repeat (matrixA.tlen()) {
+    output~tpush(matrixA.index(i) * matrixB.index(i));
+    i += 1;
+  }
+  return output;
 }
 
