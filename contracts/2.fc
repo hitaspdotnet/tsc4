@@ -18,10 +18,10 @@
 (tuple) matrix_multiplier(tuple matrixA, tuple matrixB) method_id {
   var output = empty_tuple();
 
-  int m1 = matrixA.at(0).tlen(); ;; number of rows in MatrixA
-  int n1 = matrixA.tlen(); ;; number of columns in MatrixA
-  int m2 = matrixB.at(0).tlen(); ;; number of rows in MatrixB
-  int n2 = matrixB.tlen(); ;; number of columns in MatrixB
+  int m1 = matrixA.tlen(); ;; number of rows in MatrixA
+  int n1 = matrixA.at(0).tlen(); ;; number of columns in MatrixA
+  int m2 = matrixB.tlen(); ;; number of rows in MatrixB
+  int n2 = matrixB.at(0).tlen(); ;; number of columns in MatrixB
 
   int i = 0;
 
