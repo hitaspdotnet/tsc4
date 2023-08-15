@@ -32,7 +32,42 @@ describe('Task5', () => {
     });
 
     it('should deploy', async () => {
-        const res = await task5.getfibonacci_sequence(370n, 1n)
-        console.log('res', res)
+        const j = 0n;
+        const k = 1n;
+        const res = await task5.getfibonacci_sequence(j, k)
+        //  console.log('res', res)
+
+        const result = res.stack.readTuple()
+
+        const fib = getFibSeq(Number(j), Number(k))
+
+        // console.log('result', result)
+        console.log('getFibSeq', fib)
+
+        expect(BigInt(result.remaining)).toEqual(k)
+        for (let i = 0; i < fib.length; i++) {
+            expect(fib[i].toString()).toEqual(result.readBigNumber().toString())
+        }
     });
 });
+
+function getFibSeq(n: number , k: number) {
+    let  numbers = [];
+
+    let n1 = 0n;
+    let n2 = 1n;
+    let j = (n + k);
+
+    for (let i = 0; i < j; i++){
+        if((i - n) >= 0){
+            numbers.push(n1);
+        }
+        if(i < 369){
+            let temp = n1;
+            n1 = n2;
+            n2 = temp + n2;
+        }
+    }
+
+    return numbers;
+}

@@ -23,18 +23,18 @@
   var n1 = 0;
   var n2 = 1;
   int i = 0;
-  int j = (n + k) - 1;
+  int j = (n + k);
 
-  repeat (j){ ;;  3
-    int temp = n1; ;; 0, 1, 1
-    n1 = n2; ;; 1, 1, 2
-    if((i - n) >= 0){ ;; true, true
-      output~tpush(n1); ;; [1, 1, 2,
+  repeat (j){
+    if((i - n) >= 0){
+      output~tpush(n1);
     }
     if(i < 369){
-      n2 = temp + n2; ;; 1, 2, 3
+      int temp = n1;
+      n1 = n2;
+      n2 = temp + n2;
     }
-    i = i + 1; ;; 1, 2
+    i = i + 1;
   }
 
   return output;
