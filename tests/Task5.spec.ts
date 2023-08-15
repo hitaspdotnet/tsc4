@@ -32,7 +32,7 @@ describe('Task5', () => {
     });
 
     it('should deploy', async () => {
-        const res = await task5.getfibonacci_sequence(369n, 2n)
+        const res = await task5.getfibonacci_sequence(370n, 1n)
         console.log('res', res)
     });
 });

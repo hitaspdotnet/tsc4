@@ -23,17 +23,16 @@
   var n1 = 0;
   var n2 = 1;
   var nextTerm = 0;
-  int i = n + k;
+  int i = 1;
 
-  repeat (i){
-    if((i - k) <= k){
+  while (i < (n + k) - 1){
+    nextTerm = n1 + n2;
+    n1 = n2;
+    n2 = nextTerm;
+    if(i > n){
       output~tpush(n1);
     }
-    if(i <= 370){
-      nextTerm = n1 + n2;
-      n1 = n2;
-      n2 = nextTerm;
-    }
+    i = i + 1;
   }
 
   return output;
