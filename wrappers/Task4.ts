@@ -26,4 +26,28 @@ export class Task4 implements Contract {
             body: beginCell().endCell(),
         });
     }
+
+    async get_caesar_cipher_encrypt(provider: ContractProvider, shift: bigint, text: Cell) {
+        return await provider.get('caesar_cipher_encrypt', [{
+                type: 'int',
+                value: shift
+            }, {
+                type: 'cell',
+                cell: text
+            }]
+
+        );
+    }
+
+    async get_caesar_cipher_decrypt(provider: ContractProvider, shift: bigint, text: Cell) {
+        return await provider.get('caesar_cipher_encrypt', [{
+                type: 'int',
+                value: shift
+            }, {
+                type: 'cell',
+                cell: text
+            }]
+
+        );
+    }
 }

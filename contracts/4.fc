@@ -9,13 +9,38 @@
 () recv_internal() {
 }
 
+(cell) caesar_cipher(int shift, cell text) {
+  if (cell_null?(text)) { return null(); }
+  builder strcell = begin_cell();
+
+  int charcode = 0;
+
+  while (shift < 0) {
+    shift += 26;
+  }
+
+  var data = text.begin_parse();
+  while (data.slice_bits() > 0 ){
+    charcode = data~load_uint(8);
+
+    if ( (charcode >= 65) & (charcode <= 90)) {
+      strcell = strcell.store_uint(((charcode - 65 + shift) % 26) + 65, 8);
+    }
+    elseif ((charcode >= 97) & (charcode <= 122)) {
+      strcell = strcell.store_uint(((charcode - 97 + shift) % 26) + 97, 8);
+    }
+  }
+  return strcell.end_cell();
+}
+
 ;; testable
 (cell) caesar_cipher_encrypt(int shift, cell text) method_id {
-  return begin_cell().end_cell();
+
+  return caesar_cipher(shift, text);
 }
 
 ;; testable
 (cell) caesar_cipher_decrypt(int shift, cell text) method_id {
-  return begin_cell().end_cell();
+  return caesar_cipher(shift, text);
 }
 

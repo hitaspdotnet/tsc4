@@ -33,6 +33,51 @@ describe('Task4', () => {
 
     it('should deploy', async () => {
         // the check is done inside beforeEach
-        // blockchain and task4 are ready to use
+        // blockchain and task3 are ready to use
+    });
+
+    it('should encrypt', async () => {
+        const msg = "Big Car";
+        const key = -16;
+
+        const encrypt = caesar_cipher(msg, key)
+        console.log('getCipher', encrypt)
+        expect(encrypt).toEqual("Lsq Mkb")
+    });
+
+    it('should decrypt', async () => {
+        const msg = "Lsq Mkb";
+        const key = 16;
+
+        const decrypt = caesar_cipher(msg, key)
+        console.log('getCipher', decrypt)
+
+        expect(decrypt).toEqual("Big Car")
     });
 });
+
+function caesar_cipher (str: string, amount: number) {
+    while (amount < 0) {
+        amount += 26
+    }
+
+    let output = "";
+
+    for (let i = 0; i < str.length; i++) {
+        let c = str[i];
+
+        if (c.match(/[a-z]/i)) {
+            let code = str.charCodeAt(i);
+            if (code >= 65 && code <= 90) {
+                c = String.fromCharCode(((code - 65 + amount) % 26) + 65);
+            }
+            else if (code >= 97 && code <= 122) {
+                c = String.fromCharCode(((code - 97 + amount) % 26) + 97);
+            }
+        }
+
+        output += c;
+    }
+
+    return output;
+}
