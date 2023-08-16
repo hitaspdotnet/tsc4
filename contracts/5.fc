@@ -26,12 +26,16 @@
   var j = (n + k);
 
   do {
-    if((i - n) > 0){
+    if(i > n){
       output~tpush(n1);
+    }
+    if(i >= 370){
+      output~tpush(n2);
+      return output;
     }
     (n1, n2) = (n2, n1 + n2);
     i = i + 1;
-  } until ((i > 369) | (i > j));
+  } until ((i > 371) | (i > j));
 
   return output;
 }
