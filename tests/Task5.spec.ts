@@ -36,9 +36,9 @@ describe('Task5', () => {
         // blockchain and task3 are ready to use
     });
 
-    it('should get Fib', async () => {
-        for (let j = 360; j < 370; j++) {
-            for (let x = 245; x > 255; x++) {
+    it('should get Fib dynamic', async () => {
+        for (let j = 0; j < 10; j++) {
+            for (let x = 0; x > 10; x++) {
                 const res = await task5.getfibonacci_sequence(BigInt(j), BigInt(x))
                 //  console.log('res', res)
 
@@ -54,6 +54,25 @@ describe('Task5', () => {
                     expect(fib[i].toString()).toEqual(result.readBigNumber().toString())
                 }
             }
+        }
+    });
+
+    it('should get Fib static', async () => {
+        const j = 367;
+        const x = 4;
+        const res = await task5.getfibonacci_sequence(BigInt(j), BigInt(x))
+        //  console.log('res', res)
+
+        const result = res.stack.readTuple()
+
+        const fib = getFibSeq(j, x)
+
+        // console.log('result', result)
+        // console.log('getFibSeq', fib)
+
+        expect(BigInt(result.remaining)).toEqual(BigInt(x))
+        for (let i = 0; i < fib.length; i++) {
+            expect(fib[i].toString()).toEqual(result.readBigNumber().toString())
         }
     });
 });
