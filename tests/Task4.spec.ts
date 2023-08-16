@@ -1,5 +1,5 @@
 import { Blockchain, SandboxContract } from '@ton-community/sandbox';
-import { Cell, toNano } from 'ton-core';
+import {beginCell, Cell, toNano} from 'ton-core';
 import { Task4 } from '../wrappers/Task4';
 import '@ton-community/test-utils';
 import { compile } from '@ton-community/blueprint';
@@ -36,24 +36,26 @@ describe('Task4', () => {
         // blockchain and task3 are ready to use
     });
 
-    it('should encrypt', async () => {
-        const msg = "Big Car";
-        const key = -16;
-
-        const encrypt = caesar_cipher(msg, key)
-        console.log('getCipher', encrypt)
-        expect(encrypt).toEqual("Lsq Mkb")
+    it('aaaaaa', async () => {
+        let result = await task4.getEncrypt(0, "abc");
+        // result.LoadStringTall.slice(4);
+        expect(result).toEqualCell(
+            beginCell().storeUint(0, 32).storeStringTail("abc").endCell()
+        );
     });
-
-    it('should decrypt', async () => {
-        const msg = "Lsq Mkb";
-        const key = 16;
-
-        const decrypt = caesar_cipher(msg, key)
-        console.log('getCipher', decrypt)
-
-        expect(decrypt).toEqual("Big Car")
-    });
+    it('decrypts', async () => {
+        expect(await task4.getDecrypt(0, 'abc')).toEqualCell(
+            beginCell().storeUint(0, 32).storeStringTail('abc').endCell()
+        );
+    })
+    it('should work', async () => {
+        expect(await task4.getEncrypt(2, 'HelloWorld')).toEqualCell(
+            beginCell().storeUint(0, 32).storeStringTail('JgnnqYqtnf').endCell()
+        );
+        expect(await task4.getDecrypt(2, 'JgnnqYqtnf')).toEqualCell(
+            beginCell().storeUint(0, 32).storeStringTail('HelloWorld').endCell()
+        );
+    })
 });
 
 function caesar_cipher (str: string, amount: number) {

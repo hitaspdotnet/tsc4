@@ -32,6 +32,11 @@ describe('Task5', () => {
     });
 
     it('should deploy', async () => {
+        // the check is done inside beforeEach
+        // blockchain and task3 are ready to use
+    });
+
+    it('should get Fib', async () => {
         const j = 370n;
         const k = 1n;
         const res = await task5.getfibonacci_sequence(j, k)
@@ -46,7 +51,7 @@ describe('Task5', () => {
 
         expect(BigInt(result.remaining)).toEqual(k)
         for (let i = 0; i < fib.length; i++) {
-           expect(fib[i].toString()).toEqual(result.readBigNumber().toString())
+            expect(fib[i].toString()).toEqual(result.readBigNumber().toString())
         }
     });
 });
