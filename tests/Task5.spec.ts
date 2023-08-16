@@ -37,21 +37,23 @@ describe('Task5', () => {
     });
 
     it('should get Fib', async () => {
-        const j = 1n;
-        const k = 1n;
-        const res = await task5.getfibonacci_sequence(j, k)
-        //  console.log('res', res)
+        for (let j = 360; j < 370; j++) {
+            for (let x = 245; x > 255; x++) {
+                const res = await task5.getfibonacci_sequence(BigInt(j), BigInt(x))
+                //  console.log('res', res)
 
-        const result = res.stack.readTuple()
+                const result = res.stack.readTuple()
 
-        const fib = getFibSeq(Number(j), Number(k))
+                const fib = getFibSeq(j, x)
 
-        // console.log('result', result)
-        console.log('getFibSeq', fib)
+                // console.log('result', result)
+                // console.log('getFibSeq', fib)
 
-        expect(BigInt(result.remaining)).toEqual(k)
-        for (let i = 0; i < fib.length; i++) {
-            expect(fib[i].toString()).toEqual(result.readBigNumber().toString())
+                expect(BigInt(result.remaining)).toEqual(BigInt(x))
+                for (let i = 0; i < fib.length; i++) {
+                    expect(fib[i].toString()).toEqual(result.readBigNumber().toString())
+                }
+            }
         }
     });
 });
