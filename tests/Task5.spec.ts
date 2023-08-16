@@ -37,8 +37,8 @@ describe('Task5', () => {
     });
 
     it('should get Fib', async () => {
-        const j = 201n;
-        const k = 4n;
+        const j = 1n;
+        const k = 3n;
         const res = await task5.getfibonacci_sequence(j, k)
         //  console.log('res', res)
 

@@ -22,23 +22,16 @@
 
   var n1 = 0;
   var n2 = 1;
-  int i = 0;
-  int j = (n + k);
+  var i = 1;
+  var j = (n + k);
 
-  repeat (j){
-    if (i >= n){
+  do {
+    if((i - n) > 0){
       output~tpush(n1);
     }
-    if((j - i - 1) > 0){
-      int temp = n1;
-      n1 = n2;
-      if((j - i - 2) > 0) {
-        n2 = temp + n2;
-      }
-    }
-
+    (n1, n2) = (n2, n1 + n2);
     i = i + 1;
-  }
+  } until ((i > 369) | (i > j));
 
   return output;
 }
