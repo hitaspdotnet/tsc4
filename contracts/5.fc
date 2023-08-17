@@ -21,7 +21,7 @@
   var output = empty_tuple();
   var j = (n + k);
 
-  if (j >= 371) {
+  if (k == 0) {
     return output;
   }
 
@@ -29,16 +29,19 @@
   var n2 = 1;
   var i = 1;
 
-  repeat (j) {
-    if(i > n){
-      output~tpush(n1);
-    }
-    if((i >= 370) | (j - i == 1)){
-      output~tpush(n2);
-      return output;
-    }
+  repeat (n - 1) {
     (n1, n2) = (n2, n1 + n2);
-    i = i + 1;
+  }
+
+  output~tpush(n2);
+  repeat (k - 2) {
+    (n1, n2) = (n2, n1 + n2);
+
+    output~tpush(n1);
+  }
+
+  if (k >= 2) {
+    output~tpush(n2);
   }
 
   return output;
