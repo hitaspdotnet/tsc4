@@ -20,7 +20,7 @@ int get_hash(cell c) asm "HASHCU";
 
   stack~push_back(tree);
 
-  while (~ stack.is_null()) {
+  do {
     cell c = stack~pop_back();
 
     if (get_hash(c) == hash) {
@@ -31,7 +31,7 @@ int get_hash(cell c) asm "HASHCU";
     repeat (s.slice_refs()) {
       stack~push_back(s~load_ref());
     }
-  }
+  } until (stack.is_null());
 
   return begin_cell().end_cell();
 }
