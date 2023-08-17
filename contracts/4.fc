@@ -12,7 +12,6 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 }
 
 (cell) caesar_cipher(int shift, cell text) {
-    if (cell_null?(text)) { return null(); }
     builder strcell = begin_cell();
 
     int charcode = 0;
