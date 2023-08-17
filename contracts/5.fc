@@ -19,6 +19,9 @@
 ;; testable
 (tuple) fibonacci_sequence (int n, int k) method_id {
   var output = empty_tuple();
+  if (k == 0) {
+    return output;
+  }
 
   var n1 = 0;
   var n2 = 1;
