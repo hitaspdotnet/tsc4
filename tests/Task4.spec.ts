@@ -49,37 +49,11 @@ describe('Task4', () => {
         );
     })
     it('should work', async () => {
-        expect(await task4.getEncrypt(2, 'HelloWorld')).toEqualCell(
-            beginCell().storeUint(0, 32).storeStringTail('JgnnqYqtnf').endCell()
+        expect(await task4.getEncrypt(2, 'Hello World 1')).toEqualCell(
+            beginCell().storeUint(0, 32).storeStringTail('Jgnnq Yqtnf 1').endCell()
         );
-        expect(await task4.getDecrypt(2, 'JgnnqYqtnf')).toEqualCell(
-            beginCell().storeUint(0, 32).storeStringTail('HelloWorld').endCell()
+        expect(await task4.getDecrypt(2, 'Jgnnq Yqtnf 1')).toEqualCell(
+            beginCell().storeUint(0, 32).storeStringTail('Hello World 1').endCell()
         );
     })
 });
-
-function caesar_cipher (str: string, amount: number) {
-    while (amount < 0) {
-        amount += 26
-    }
-
-    let output = "";
-
-    for (let i = 0; i < str.length; i++) {
-        let c = str[i];
-
-        if (c.match(/[a-z]/i)) {
-            let code = str.charCodeAt(i);
-            if (code >= 65 && code <= 90) {
-                c = String.fromCharCode(((code - 65 + amount) % 26) + 65);
-            }
-            else if (code >= 97 && code <= 122) {
-                c = String.fromCharCode(((code - 97 + amount) % 26) + 97);
-            }
-        }
-
-        output += c;
-    }
-
-    return output;
-}
