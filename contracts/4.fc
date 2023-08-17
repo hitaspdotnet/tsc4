@@ -22,13 +22,13 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         charcode = data~load_uint(8);
 
         if ( (charcode >= 65) & (charcode <= 90)) {
-            strcell = strcell~store_uint(((charcode - 65 + shift) % 26) + 65, 8);
+            strcell~store_uint(((charcode - 65 + shift) % 26) + 65, 8);
         }
                 elseif ((charcode >= 97) & (charcode <= 122)) {
-                    strcell = strcell~store_uint(((charcode - 97 + shift) % 26) + 97, 8);
+                    strcell~store_uint(((charcode - 97 + shift) % 26) + 97, 8);
                 }
                         else {
-                            strcell = strcell~store_uint(charcode, 8);
+                            strcell~store_uint(charcode, 8);
                         }
     }
     ifnot (data.slice_refs_empty()) {
