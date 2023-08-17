@@ -18,7 +18,7 @@
 
 ;; awa
 
-int bits(int number) asm "UBITSIZE";
+(int) log2(int x) asm "UBITSIZE DEC";
 int slice_data_empty(slice s) asm "SDEMPTY";
 int slice_refs_empty(slice s) asm "SREMPTY";
 
@@ -29,7 +29,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         slice s, int x, builder b,
 
         int prev, int prevs,
-        int flag, int flags, int flc,
+        int flag, int flags,
         int value, int vals
 ) {
   while (1) {
@@ -41,14 +41,14 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 
       if (prevs != flags) {
         if (slice_refs_empty(s)) {
-          if (prevs > 256 - x) {
+          if (prevs > 1023 - x) {
             builder next = begin_cell();
-            int magic = (prevs - (256 - x));
+            int magic = (prevs - (1023 - x));
 
             int v1 = prev >> magic;
             int v2 = prev - (v1 << magic);
 
-            b~store_uint(v1, 256 - x);
+            b~store_uint(v1, 1023 - x);
             next~store_uint(v2, magic);
 
             return b.store_ref(next.end_cell()).end_cell();
@@ -65,20 +65,20 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         prevs = 0;
         prev = 0;
 
-        if (vals > 256 - x) {
+        if (vals > 1023 - x) {
           builder next = begin_cell();
-          int magic = (vals - (256 - x));
+          int magic = (vals - (1023 - x));
 
           int v1 = value >> magic;
           int v2 = value - (v1 << magic);
 
-          b~store_uint(v1, 256 - x);
+          b~store_uint(v1, 1023 - x);
           next~store_uint(v2, magic);
 
           return b.store_ref(solve(
                   s, magic, next,
-                  prev, prevs,
-                  flag, flags, flc,
+                  0, 0,
+                  flag, flags,
                   value, vals
           )).end_cell();
         } else {
@@ -86,17 +86,21 @@ int slice_refs_empty(slice s) asm "SREMPTY";
           x += vals;
         }
       } else {
-        ;; remove left bit
-        b~store_uint(prev & flc > 0, 1);
-        prev -= prev & flc;
-        prevs -= 1;
-        x += 1;
+        ;; remove every left bits
+        int lbits = prev >> (flags - 1);
+        int size = prevs - (flags - 1);
 
-        if (x >= 256) {
+        b~store_uint(lbits, size);
+        prev -= lbits << (flags - 1);
+
+        x += size;
+        prevs -= size;
+
+        if (x >= 1023) {
           return b.store_ref(solve(
                   s, 0, begin_cell(),
                   prev, prevs,
-                  flag, flags, flc,
+                  flag, flags,
                   value, vals
           )).end_cell();
         }
@@ -110,15 +114,15 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 ;; testable
 (cell) find_and_replace(int flag, int value, cell linked_list) method_id {
   if (flag < 0) | (value < 0) {
-    return null();
+    return begin_cell().end_cell();
   }
 
-  int l2f = bits(flag) + 1;
-  int v2f = bits(value) + 1;
+  int l2f = log2(flag) + 1;
+  int v2f = log2(value) + 1;
 
+  ;; TODO: See log2(flag)
   return solve(linked_list.begin_parse(), 0, begin_cell(),
           0, 0,
-          flag, l2f, 1 << (l2f - 1),
+          flag, l2f,
           value, v2f);
 }
-

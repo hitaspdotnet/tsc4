@@ -19,26 +19,27 @@
 ;; testable
 (tuple) fibonacci_sequence (int n, int k) method_id {
   var output = empty_tuple();
-  if (k == 0) {
+  var j = (n + k);
+
+  if (j >= 371) {
     return output;
   }
 
   var n1 = 0;
   var n2 = 1;
   var i = 1;
-  var j = (n + k);
 
-  do {
+  repeat (j) {
     if(i > n){
       output~tpush(n1);
     }
-    if(i >= 370){
+    if((i >= 370) | (j - i == 1)){
       output~tpush(n2);
       return output;
     }
     (n1, n2) = (n2, n1 + n2);
     i = i + 1;
-  } until ((i > 371) | (i > j));
+  }
 
   return output;
 }
