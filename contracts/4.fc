@@ -17,7 +17,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
     int charcode = 0;
 
     var data = text.begin_parse();
-    while (data.slice_bits() > 0 ){
+    while (~ data.slice_data_empty?()){
         charcode = data~load_uint(8);
 
         if ( (charcode >= 65) & (charcode <= 90)) {

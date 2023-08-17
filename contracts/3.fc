@@ -16,6 +16,8 @@
 
 -}
 int bits(int number) asm "UBITSIZE";
+int slice_data_empty(slice s) asm "SDEMPTY";
+int slice_refs_empty(slice s) asm "SREMPTY";
 
 (cell) solve(
         slice s, int x, builder b,
