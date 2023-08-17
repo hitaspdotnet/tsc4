@@ -37,6 +37,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
     return strcell.end_cell();
 }
 
+
 ;; testable
 (cell) caesar_cipher_encrypt(int shift, cell text) method_id {
     return caesar_cipher(shift, text);
