@@ -30,10 +30,8 @@ forall X -> (tuple, (X)) pop_back (tuple t) asm "UNCONS";
     }
     slice s = c.begin_parse();
 
-    ifnot (s.slice_refs_empty()) {
-      repeat (s.slice_refs()) {
-        stack~push_back(s~load_ref());
-      }
+    repeat (s.slice_refs()) {
+      stack~push_back(s~load_ref());
     }
   }
 
