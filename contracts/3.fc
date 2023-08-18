@@ -16,8 +16,6 @@
 
 -}
 
-global int flag_size;
-global int value_size;
 (int) ubitsize(int x) asm "UBITSIZE";
 int slice_data_empty(slice s) asm "SDEMPTY";
 int slice_refs_empty(slice s) asm "SREMPTY";
@@ -28,22 +26,22 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 (cell) loop_through_find(
         slice s, int x, builder b,
 
-        int prev, int prevs,
-        int flag,
-        int value
+        int prev, int prev_size,
+        int flag, int flag_size,
+        int value, int value_size
 ) {
   while (1) {
-    if (prevs < flag_size) {
-      int diff = min(flag_size - prevs, slice_bits(s));
-      prevs += diff;
+    if (prev_size < flag_size) {
+      int diff = min(flag_size - prev_size, slice_bits(s));
+      prev_size += diff;
       prev <<= diff;
       prev += s~load_uint(diff);
 
-      if (prevs != flag_size) {
+      if (prev_size != flag_size) {
         if (slice_refs_empty(s)) {
-          if (prevs > 127 - x) {
+          if (prev_size > 127 - x) {
             builder next = begin_cell();
-            int magic = (prevs - (127 - x));
+            int magic = (prev_size - (127 - x));
 
             int v1 = prev >> magic;
             int v2 = prev - (v1 << magic);
@@ -54,7 +52,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
             return b.store_ref(next.end_cell()).end_cell();
           }
 
-          b~store_uint(prev, prevs);
+          b~store_uint(prev, prev_size);
           return b.end_cell();
         }
 
@@ -62,7 +60,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
       }
     } else {
       if (prev == flag) {
-        prevs = 0;
+        prev_size = 0;
         prev = 0;
 
         if (value_size > 127 - x) {
@@ -78,8 +76,8 @@ int slice_refs_empty(slice s) asm "SREMPTY";
           return b.store_ref(loop_through_find(
                   s, magic, next,
                   0, 0,
-                  flag,
-                  value
+                  flag, flag_size,
+                  value, value_size
           )).end_cell();
         } else {
           b~store_uint(value, value_size);
@@ -88,20 +86,20 @@ int slice_refs_empty(slice s) asm "SREMPTY";
       } else {
         ;; remove every left bits
         int lbits = prev >> (flag_size - 1);
-        int size = prevs - (flag_size - 1);
+        int size = prev_size - (flag_size - 1);
 
         b~store_uint(lbits, size);
         prev -= lbits << (flag_size - 1);
 
         x += size;
-        prevs -= size;
+        prev_size -= size;
 
         if (x >= 127) {
           return b.store_ref(loop_through_find(
                   s, 0, begin_cell(),
-                  prev, prevs,
-                  flag,
-                  value
+                  prev, prev_size,
+                  flag, flag_size,
+                  value, value_size
           )).end_cell();
         }
       }
@@ -114,11 +112,11 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 ;; testable
 (cell) find_and_replace(int flag, int value, cell linked_list) method_id {
 
-  flag_size = ubitsize(flag);
-  value_size = ubitsize(value);
+  int flag_size = ubitsize(flag);
+  int value_size = ubitsize(value);
 
   return loop_through_find(linked_list.begin_parse(), 0, begin_cell(),
           0, 0,
-          flag,
-          value);
+          flag, flag_size,
+          value, value_size);
 }
