@@ -74,7 +74,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
     if (shift == 0) {
         return text;
     }
-    return caesar_cipher(shift, text);
+    return cipher_encrypt(shift, text);
 }
 
 ;; testable
