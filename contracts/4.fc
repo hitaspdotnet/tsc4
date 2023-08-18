@@ -13,9 +13,6 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 
 (cell) caesar_cipher(int shift, cell text) {
     builder strcell = begin_cell();
-    if (shift == 0) {
-        return text;
-    }
     int charcode = 0;
 
     var data = text.begin_parse();
@@ -40,12 +37,18 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 
 ;; testable
 (cell) caesar_cipher_encrypt(int shift, cell text) method_id {
+    if (shift == 0) {
+        return text;
+    }
     return caesar_cipher(shift, text);
 }
 
 ;; testable
 (cell) caesar_cipher_decrypt(int shift, cell text) method_id {
     shift = (26 - shift) % 26;
+    if (shift == 0) {
+        return text;
+    }
     return caesar_cipher(shift, text);
 }
 
