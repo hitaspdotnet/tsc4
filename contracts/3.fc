@@ -87,11 +87,11 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         }
       } else {
         ;; remove every left bits
-        int lbits = prev >> (flags - 1);
-        int size = prevs - (flags - 1);
+        int lbits = prev >> flags;
+        int size = prevs - flags;
 
         b~store_uint(lbits, size);
-        prev -= lbits << (flags - 1);
+        prev -= lbits << flags;
 
         x += size;
         prevs -= size;
@@ -117,7 +117,6 @@ int slice_refs_empty(slice s) asm "SREMPTY";
   int flag_size = ubitsite(flag);
   int value_size = ubitsite(value);
 
-  ;; TODO: See log2(flag)
   return solve(linked_list.begin_parse(), 0, begin_cell(),
           0, 0,
           flag, flag_size,
