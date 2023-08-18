@@ -32,79 +32,81 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         int flag, int flags,
         int value, int vals
 ) {
-  if (prevs < flags) {
-    int diff = min(flags - prevs, slice_bits(s));
-    prevs += diff;
-    prev <<= diff;
-    prev += s~load_uint(diff);
+  do {
+    if (prevs < flags) {
+      int diff = min(flags - prevs, slice_bits(s));
+      prevs += diff;
+      prev <<= diff;
+      prev += s~load_uint(diff);
 
-    if (prevs != flags) {
-      if (slice_refs_empty(s)) {
-        if (prevs > 127 - x) {
+      if (prevs != flags) {
+        if (slice_refs_empty(s)) {
+          if (prevs > 127 - x) {
+            builder next = begin_cell();
+            int magic = (prevs - (127 - x));
+
+            int v1 = prev >> magic;
+            int v2 = prev - (v1 << magic);
+
+            b~store_uint(v1, 127 - x);
+            next~store_uint(v2, magic);
+
+            return b.store_ref(next.end_cell()).end_cell();
+          }
+
+          b~store_uint(prev, prevs);
+          return b.end_cell();
+        }
+
+        s = s~load_ref().begin_parse();
+      }
+    } else {
+      if (prev == flag) {
+        prevs = 0;
+        prev = 0;
+
+        if (vals > 127 - x) {
           builder next = begin_cell();
-          int magic = (prevs - (127 - x));
+          int magic = (vals - (127 - x));
 
-          int v1 = prev >> magic;
-          int v2 = prev - (v1 << magic);
+          int v1 = value >> magic;
+          int v2 = value - (v1 << magic);
 
           b~store_uint(v1, 127 - x);
           next~store_uint(v2, magic);
 
-          return b.store_ref(next.end_cell()).end_cell();
+          return b.store_ref(solve(
+                  s, magic, next,
+                  0, 0,
+                  flag, flags,
+                  value, vals
+          )).end_cell();
+        } else {
+          b~store_uint(value, vals);
+          x += vals;
         }
-
-        b~store_uint(prev, prevs);
-        return b.end_cell();
-      }
-
-      s = s~load_ref().begin_parse();
-    }
-  } else {
-    if (prev == flag) {
-      prevs = 0;
-      prev = 0;
-
-      if (vals > 127 - x) {
-        builder next = begin_cell();
-        int magic = (vals - (127 - x));
-
-        int v1 = value >> magic;
-        int v2 = value - (v1 << magic);
-
-        b~store_uint(v1, 127 - x);
-        next~store_uint(v2, magic);
-
-        return b.store_ref(solve(
-                s, magic, next,
-                0, 0,
-                flag, flags,
-                value, vals
-        )).end_cell();
       } else {
-        b~store_uint(value, vals);
-        x += vals;
-      }
-    } else {
-      ;; remove every left bits
-      int lbits = prev >> (flags - 1);
-      int size = prevs - (flags - 1);
+        ;; remove every left bits
+        int lbits = prev >> (flags - 1);
+        int size = prevs - (flags - 1);
 
-      b~store_uint(lbits, size);
-      prev -= lbits << (flags - 1);
+        b~store_uint(lbits, size);
+        prev -= lbits << (flags - 1);
 
-      x += size;
-      prevs -= size;
+        x += size;
+        prevs -= size;
 
-      if (x >= 127) {
-        return b.store_ref(solve(
-                s, 0, begin_cell(),
-                prev, prevs,
-                flag, flags,
-                value, vals
-        )).end_cell();
+        if (x >= 127) {
+          return b.store_ref(solve(
+                  s, 0, begin_cell(),
+                  prev, prevs,
+                  flag, flags,
+                  value, vals
+          )).end_cell();
+        }
       }
     }
-  }
+  } until (0);
 
   return b.end_cell();
 }
