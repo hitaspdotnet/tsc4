@@ -23,14 +23,16 @@ cell empty_cell() asm "<b b> PUSHREF";
 
   do {
     cell c = stack~pop_back();
-
-    if (get_hash(c) == hash) {
-      return c;
-    }
     slice s = c.begin_parse();
 
-    repeat (s.slice_refs()) {
-      stack~push_back(s~load_ref());
+    if (s~load_int(1)) {
+      if (get_hash(c) == hash){
+        return c;
+      }
+    }else{
+      repeat (s.slice_refs()) {
+        stack~push_back(s~load_ref());
+      }
     }
   } until (stack.is_null());
 
