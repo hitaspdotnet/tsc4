@@ -32,7 +32,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         int flag, int flags,
         int value, int vals
 ) {
-  do {
+  while (1) {
     if (prevs < flags) {
       int diff = min(flags - prevs, slice_bits(s));
       prevs += diff;
@@ -106,7 +106,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         }
       }
     }
-  } until (0);
+  }
 
   return b.end_cell();
 }
