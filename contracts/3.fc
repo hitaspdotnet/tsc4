@@ -91,7 +91,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
         int size = prevs - (flags - 1);
 
         b~store_uint(lbits, size);
-        prev -= lbits << flags;
+        prev -= lbits << (flags - 1);
 
         x += size;
         prevs -= size;
