@@ -7,7 +7,6 @@
 -}
 int slice_data_empty(slice s) asm "SDEMPTY";
 int slice_refs_empty(slice s) asm "SREMPTY";
-(slice, int) load_uint8(slice s) asm "8 LDU SWAP";
 (builder) store_uint8(builder b, int t) inline asm(t b) "8 STU";
 
 () recv_internal() {
@@ -18,7 +17,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
     slice s = text.begin_parse();
 
     do {
-        (s, int char) = load_uint8(s);
+        int char = s~load_uint(8);
         if (char >= 97) & (char <= 122) {
             char += shift;
             if (char > 122) {
@@ -46,7 +45,7 @@ int slice_refs_empty(slice s) asm "SREMPTY";
     slice s = text.begin_parse();
 
     do {
-        (s, int char) = load_uint8(s);
+        int char = s~load_uint(8);
         if (char >= 97) & (char <= 122) {
             char -= shift;
             if (char < 97) {
