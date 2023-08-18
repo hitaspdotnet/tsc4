@@ -6,22 +6,10 @@
   this branch should be returned. Return empty cell if the branch is not found.
 -}
 
-int slice_data_empty(slice s) asm "SDEMPTY";
 int slice_refs_empty(slice s) asm "SREMPTY";
 int get_hash(cell c) asm "HASHCU";
 
 () recv_internal() {
-}
-
-(cell) find_by_hash(int hash, cell tree) {
-  builder c = begin_cell();
-  slice s = tree.begin_parse();
-
-  if (~ s.slice_refs_empty()) {
-    return c.store_ref(find_by_hash(hash, s~load_ref())).end_cell();
-  }
-
-  return c.end_cell();
 }
 
 ;; testable
@@ -31,5 +19,12 @@ int get_hash(cell c) asm "HASHCU";
     return tree;
   }
 
-  return find_by_hash(hash, tree);
+  builder c = begin_cell();
+  slice s = tree.begin_parse();
+
+  if (~ s.slice_refs_empty()) {
+    return c.store_ref(find_branch_by_hash(hash, s~load_ref())).end_cell();
+  }
+
+  return c.end_cell();
 }
