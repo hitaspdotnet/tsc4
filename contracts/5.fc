@@ -59,8 +59,6 @@ NIL
     return empty_tuple();
   }
 
-  tuple output = hi_fib(n, k);
-        ~dump(output);
-  return output;
+  return hi_fib(n, k);
 }
 
