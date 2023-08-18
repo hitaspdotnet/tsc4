@@ -59,7 +59,7 @@ describe('Task5', () => {
 
     it('should get Fib static', async () => {
         const j = 369;
-        const x = 0;
+        const x = 1;
         const res = await task5.getfibonacci_sequence(BigInt(j), BigInt(x))
         //  console.log('res', res)
 

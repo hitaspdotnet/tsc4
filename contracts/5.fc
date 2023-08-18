@@ -13,6 +13,43 @@
   1923063428480944139667114773918309212080528]
 -}
 
+(tuple) hi_fib(int n, int k) asm """
+NIL
+        OVER
+        0 EQINT
+        IFJMP:<{
+        2 1 BLKDROP2
+        }>
+        0 PUSHINT
+        1 PUSHINT
+        s0 s4 XCHG
+        REPEAT:<{
+        s3 PUSH
+                ADD
+                s0 s3 XCHG
+        }>
+        TUCK
+        TPUSH
+        s2 PUSH
+        -2 ADDCONST
+        REPEAT:<{
+        s1 s3 XCPU
+                ADD
+                s1 s3 XCPU
+                TPUSH
+                s1 s3 XCHG
+        }>
+        NIP
+        SWAP
+        1 GTINT
+        IF:<{
+        SWAP
+                TPUSH
+        }>ELSE<{
+        NIP
+        }>
+        """;
+
 () recv_internal() {
 }
 
@@ -22,26 +59,8 @@
     return empty_tuple();
   }
 
-  tuple output = empty_tuple();
-
-  int n1 = 0;
-  int n2 = 1;
-
-  repeat (n) {
-    (n1, n2) = (n2, n1 + n2);
-  }
-
-  output~tpush(n1);
-  repeat (k - 2) {
-    (n1, n2) = (n2, n1 + n2);
-
-    output~tpush(n1);
-  }
-
-  if (k >= 2) {
-    output~tpush(n2);
-  }
-
+  tuple output = hi_fib(n, k);
+        ~dump(output);
   return output;
 }
 
