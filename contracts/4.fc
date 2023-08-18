@@ -11,32 +11,66 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 () recv_internal() {
 }
 
-(cell) caesar_cipher(int shift, cell text) {
-    builder strcell = begin_cell();
-    int charcode = 0;
+(cell) cipher_encrypt(int shift, cell text) {
+    builder c = begin_cell();
+    slice s = text.begin_parse();
 
-    var data = text.begin_parse();
-    while (~ data.slice_data_empty?()){
-        charcode = data~load_uint(8);
-
-        if ( (charcode >= 65) & (charcode <= 90)) {
-            charcode = ((charcode - 65 + shift) % 26) + 65;
+    do {
+        int char = s~load_uint(8);
+        if (char >= 97) & (char <= 122) { ;; min
+            char += shift;
+            if (char > 122) {
+                char = 96 + (char - 122);
+            }
+        } elseif (char >= 65) & (char <= 90) {  ;; may
+            char += shift;
+            if (char > 90) {
+                char = 64 + (char - 90);
+            }
         }
-                elseif ((charcode >= 97) & (charcode <= 122)) {
-                    charcode = ((charcode - 97 + shift) % 26) + 97;
-                }
 
-        strcell~store_uint(charcode, 8);
+        c~store_uint(char, 8);
+    } until (s.slice_data_empty?())
+
+    if (~ s.slice_refs_empty()) {
+        return c.store_ref(cipher_encrypt(shift, s~load_ref())).end_cell();
     }
-    ifnot (data.slice_refs_empty()) {
-        return strcell.store_ref(caesar_cipher(shift, data~load_ref())).end_cell();
+
+    return c.end_cell();
+}
+
+(cell) cipher_decrypt(int shift, cell text) {
+    builder c = begin_cell();
+    slice s = text.begin_parse();
+
+    do {
+        int char = s~load_uint(8);
+        if (char >= 97) & (char <= 122) { ;; min
+            char -= shift;
+            if (char < 97) {
+                char = 123 - (97 - char);
+            }
+        } elseif (char >= 65) & (char <= 90) {  ;; may
+            char -= shift;
+            if (char < 65) {
+                char = 91 - (65 - char);
+            }
+        }
+
+        c~store_uint(char, 8);
+    } until (s.slice_data_empty?());
+
+    if (~ s.slice_refs_empty()) {
+        return c.store_ref(cipher_decrypt(shift, s~load_ref())).end_cell();
     }
-    return strcell.end_cell();
+
+    return c.end_cell();
 }
 
 
 ;; testable
 (cell) caesar_cipher_encrypt(int shift, cell text) method_id {
+    shift -= (shift / 26) * 26;
     if (shift == 0) {
         return text;
     }
@@ -45,10 +79,10 @@ int slice_refs_empty(slice s) asm "SREMPTY";
 
 ;; testable
 (cell) caesar_cipher_decrypt(int shift, cell text) method_id {
-    shift = (26 - shift) % 26;
+    shift -= (shift / 26) * 26;
     if (shift == 0) {
         return text;
     }
-    return caesar_cipher(shift, text);
+    return cipher_decrypt(shift, text);
 }
 
