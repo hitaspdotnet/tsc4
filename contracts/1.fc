@@ -29,10 +29,9 @@ cell empty_cell() asm "<b b> PUSHREF";
       if (get_hash(c) == hash){
         return c;
       }
-    }else{
-      repeat (s.slice_refs()) {
-        stack~push_back(s~load_ref());
-      }
+    }
+    repeat (s.slice_refs()) {
+      stack~push_back(s~load_ref());
     }
   } until (stack.is_null());
 
