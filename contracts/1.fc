@@ -25,10 +25,8 @@ cell empty_cell() asm "<b b> PUSHREF";
     cell c = stack~pop_back();
     slice s = c.begin_parse();
 
-    if (s~load_int(1)) {
-      if (get_hash(c) == hash){
-        return c;
-      }
+    if (get_hash(c) == hash){
+      return c;
     }
     repeat (s.slice_refs()) {
       stack~push_back(s~load_ref());
